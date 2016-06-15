@@ -6,7 +6,6 @@ all: $(MAIN).pdf
 
 $(MAIN).pdf: $(SRCTEX) bibfile.bib
 	latexmk -pdf $(MAIN)
-	evince $(MAIN).pdf &
 
 
 

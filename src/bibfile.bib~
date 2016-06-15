@@ -1,26 +1,3 @@
-@inproceedings{Paisante16,
-  author = {Vitor Paisante and Maaroua Maleej and Laure Gonnord and Leonardo Barbosa and Fernando Magno Quintão Pereira},
-  title = "Symbolic Range Analysis of Pointer",
-  booktitle = {CGO},
-  year = {2016},
-  publisher = {ACM}
-}
-@inproceedings{Saggioro15,
- author = {Luis Felipe Zaffra Saggioro and Vitor Mendes Paisante and Raphael Erlani Rodrigues and Leonardo Barbosa e Oliveria and Fernando Magno Quintão Pereira},
- title = {Cruzando Dados Distribuídos para Detectar Estouro de Inteiro},
- journal = {Revista IEEE América Latina},
- volume = {13},
- year = {2015},
- publisher = {IEEE}
-}
-@inproceedings{Paisante14,
-  author = {Vitor Mendes Paisante and Raphael Erlani Rodrigues and Luis Felipe Zaffra Saggioro and Leonardo Barbosa e Oliveria and Fernando Magno Quintão Pereira},
-  title = "Prevenção de Ataques em Sistemas Distribuídos via Análise de Intervalos",
-  booktitle = {Anais do SBSeg},
-  year = {2014},
-  pages = {209}
-}
-
 @inproceedings{Abel69,
   author = {Abel, Norma E. and Budnik, Paul P. and Kuck, David J. and Muraoka, Yoichi and Northcote, Robert S. and Wilhelmson, Robert B.},
   title = "{TRANQUIL}: a language for an array processing computer",
