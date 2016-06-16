@@ -18,4 +18,4 @@ currently available in LLVM.
 Furthermore, our analysis is very fast: we can go over one million assembly
 instructions in 10 seconds.
 
-\keywords{Alias Analysis, Static Analysis, Compilers}
+\keywords{Alias Analysis, Static Analysis, Compiler}

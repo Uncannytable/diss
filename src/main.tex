@@ -68,8 +68,8 @@
   title={Symbolic Range Analysis of Pointers},
   portuguesetitle={Análise Simbólica de Intervalos de Ponteiros},
   authorrev={Mendes Paisante, Vitor},
-  cutter={D1234p},
-  cdu={519.6*82.10},
+  cutter={???},
+  cdu={???},
   university={Federal University of Minas Gerais},
   portugueseuniversity={Universidade Federal de Minas Gerais},
   course={Computer Science},
@@ -90,7 +90,7 @@
   epigraphtext={'Are we nearly there?' Alice managed to
 pant out at last.\\ 'Nearly there!' the Queen repeated. 'Why, we
 passed it ten minutes ago! Faster!'}{Lewis Carroll},
-  indexkeys={1.~Computação --- Teses. 2.~Compiladores --- Teses. I.~Orientador.
+  indexkeys={1.~Computação. 2.~Compiladores. 3.~Análise Estática I.~Orientador.
     II.~Título.},
 }
 
@@ -121,7 +121,7 @@ passed it ten minutes ago! Faster!'}{Lewis Carroll},
 
 %Chapter 1: Introduction
 \chapter{Introduction}
-\section {Context: pointers are important}
+\section {Context}
 % the importance of Alias Analysis
 Pointer analysis is one of the most fundamental compiler technologies.
 This analysis lets the compiler distinguish one memory location from others;
@@ -136,7 +136,7 @@ Nevertheless, one particular feature of imperative programming languages remains
 to be handled satisfactorily by the current state-of-the-art approaches:
 the disambiguation of pointer intervals.
 
-\section {Problem: analyzing pointers is difficult}
+\section {Problem}
 % The problem imposed by pointer arithmetics and The need for better alias analyses.
 Mainstream compilers still struggle to distinguish intervals within the
 same array.
@@ -157,7 +157,7 @@ interchanging~\citep[Ch.09]{Wolfe96}, are very limited in practice.
 Therefore, we claim that, to reach their full potential, compilers need to
 be provided with more effective alias analyses.
 
-\section {Solution: a new points-to analysis}
+\section {Solution}
 % Combining alias and range analyses.
 This work describes such an analysis.
 We introduce an abstract domain that associates pointers with symbolic ranges.
@@ -185,7 +185,7 @@ In a symbolic range analysis, ranges are defined as expressions of the program's
 symbols, a symbol being either a constant or the name of a variable.
 There exist many approaches to symbolic range analyses in the
 literature~\citep{Blume94,Nazare14,Rugina05}.
-The algorithms that we present in this paper do not depend on any particular
+The algorithms that we present in this work do not depend on any particular
 implementation.
 Nevertheless, the more precise the range analysis that we use, the more
 precise the analysis facts that we produce.
@@ -222,25 +222,20 @@ The layout and content inference analysis used in these papers differed to our
 current approach by using a numerical range analysis, since a symbolic approach 
 would not be of relevance for such application.
 
-
-%Chapter 2: Background
-\chapter{Background}
-%- SSA form
-%- Control Flow Graphs
-%- LLVM
-%- Points-to analysis
-%- Range analysis
-%- Lattice
-%- Etc
-
-%Chapter 3: Literature Review
+%Chapter 2: Literature Review
 \chapter{Literature Review}
-%- Work on points-to analysis
-%- Work on range analysis
-%- Work on pointer disambiguation for parallelization
-%- Previous attempts to merge points-to and range analyses
 
-\section {CGO}
+\section {Background}
+\subsection {SSA form}
+
+\subsection {Control Flow Graphs}
+
+\subsection {LLVM}
+
+\subsection {Lattice}
+
+\section {Points-to Analysis}
+%- Work on points-to analysis
 The contribution of this work is a new representation of pointers, based
 on the \ranboxes lattice, and an algorithm to reach a fixed point in this
 lattice, based on abstract interpretation.
@@ -254,7 +249,10 @@ augmented to map pointers to sets of locations plus ranges.
 Furthermore, the use of our approach does not prevent the employment of
 acceleration techniques such as lazy cycle detection~\citep{Hardekopf07a}, or
 wave propagation~\citep{Pereira09b}.
-
+\section {Range Analysis}
+%- Work on range analysis
+\section {Pointer Disambiguation for Parallelization}
+%- Work on pointer disambiguation for parallelization
 There exist previous work that used similar lattices as ours, albeit different
 resolution algorithms.
 For instance, much of the work on automatic parallelization has some way to
@@ -273,7 +271,8 @@ hence, concessions must be made for the sake of speed.
 For instance, whereas the previous literature that we know restrict their
 work to pointers within loops, we can analyze programs with over one million
 assembly instructions in a few seconds.
-
+\section {Points-to with Range Analyses}
+%- Previous attempts to merge points-to and range analyses
 There exist work that, like ours, also associates intervals with pointers, and
 solves static analysis via abstract interpretation techniques.
 However, to the best of our knowledge, these approaches have a fundamental
@@ -304,13 +303,9 @@ This representation lets us solve our analysis sparsely, whereas Balakrishnan's
 algorithm works on a dense representation that associates facts with
 pairs formed by variables and program points.
 
-%Chapter 4: A New Points-to Analysis
+%Chapter 3: A New Points-to Analysis
 \chapter{A New Points-to Analysis}
-%- Formal definitions
-%- Pointer Trees
-%- Iterative Solver
 
-\section {CGO}
 \section{Overview}
 \label{sec:ovf}
 
@@ -354,7 +349,7 @@ The range interval $[l, u]$ associated with a variable $i$ is
 an estimate of
 the lowest ($l$) and highest ($u$) values that $i$ can assume
 throughout the execution of the program.
-In this paper, we propose an alias analysis that solves this problem.
+In this work, we propose an alias analysis that solves this problem.
 To achieve this goal, we couple this alias analysis with range
 analysis on symbolic intervals~\citep{Blume94}.
 Thus, we will say that the store at line 6 might modify any address from
@@ -510,7 +505,7 @@ Instructions (I)                & ::= & \\
 
 Figure~\ref{fig:ex3} shows the control flow graph of the program seen in
 Figure~\ref{fig:exmotiv}.
-The implementation of the analysis that we shall present in this paper is
+The implementation of the analysis that we shall present in this work is
 interprocedural, albeit
 not context-sensitive.
 To achieve interprocedurality, we associate actual parameters with formal parameters 
@@ -640,7 +635,7 @@ The more precise the technique we use to produce this result, the more precise o
 results will be.
 Nevertheless, the exact implementation of the range analysis is immaterial for
 the formalization that follows.
-In this paper, we are using the following widening operator on \ranboxes:
+In this work, we are using the following widening operator on \ranboxes:
  \[[l, u]\nabla [l', u'] \ = \
 \begin{cases}
 [l, u] & \mbox{if} \ l = l' \ \mbox{and} \ u = u' \\
@@ -1155,7 +1150,7 @@ points at $\phi$ functions (as we already said before) because~:
   lattice; hence, there is no need for widening.
 \end{compactitem}
 
-%Chapter 5: Experiments
+%Chapter 4: Experiments
 \chapter{Experiments}
 
 We have implemented our range analysis in the LLVM compiler, version 3.5.
@@ -1190,7 +1185,7 @@ memory.
 escape from the function that allocates them
 \end{compactitem}
 As we see from the above list, the {\em basic} alias analysis has some of the
-capabilities of the technique that we present in this paper, namely the
+capabilities of the technique that we present in this work, namely the
 ability to distinguish fields and indices within aggregate types.
 In this case, such disambiguation is only possible when the aggregates
 are indexed with constants known at compilation time.
@@ -1211,8 +1206,8 @@ dereference array \texttt{a} within the loop.
 Contrary to our analysis, SCEV is only effective to disambiguate pointers
 accessed within loops and indexed by variables in the expected closed-form.
 
-{\centering
 \begin{table}[t!]
+\begin{center}
 \begin{footnotesize}
 {\renewcommand{\arraystretch}{1.1}
 \begin{tabular}{|l|r|r|r|r|r|}
@@ -1243,13 +1238,14 @@ yacr2    &38,262&0.20&7.22&12.83         & 14.48 \\ \hline
 Total    &3,093,541&6.97&30.83&41.73      & 46.53 \\ \hline
 \end{tabular}}
 \end{footnotesize}
+\end{center}
 \caption{Comparison between three different alias analyses.
 We let \textbf{r + b} be the combination of our technique and the {\em basic}
 alias analysis of LLVM.
 Numbers in \textbf{scev}, \textbf{basic}, \textbf{rbaa} and \textbf{r+b}
 show percentage of queries that answer ``no-alias".}
 \label{fig:multisources}
-\end{table}}
+\end{table}
 
 Figure~\ref{fig:multisources} shows how the three different analyses fare
 when applied on larger benchmarks.
@@ -1274,10 +1270,9 @@ By combining these two analyses, we extended this number to 1.439 thousand pairs
 of pointers.
 SCEV could not increase this number any further.
 
-{\centering
 \begin{table}[b!]
+\begin{center}
 \begin{footnotesize}
-
 {\renewcommand{\arraystretch}{1.1}
 \begin{tabular}{|l|r|r|l|r|r|}
 \hline
@@ -1297,13 +1292,14 @@ fixoutput & 3,142 & 4 & ks & 3,105 & 218 \\
 football & 297,491 & 22,052 & yacr2 & 4,909 & 487 \\ \hline
 \end{tabular}}
 \end{footnotesize}
+\end{center}
 \caption{Number of queries solved with the global test of
 Section~\ref{sub:global}.
 Column \textbf{noalias} gives the number of queries that we have been able
 to disambiguate, and column \textbf{global} shows how many queries were solved
 with the global test.}
 \label{fig:noalias}
-\end{table}}
+\end{table}
 
 Figure~\ref{fig:noalias} shows the proportion of queries that we have been
 able to disambiguate with the global test of Section~\ref{sub:global}.
@@ -1366,14 +1362,18 @@ The linear correlation between time and number of instructions for the
 programs seen in Figure~\ref{fig:TimeVsSize} is 0.982, and the
 correlation between time and number of pointers is 0.975.
 
-%Chapter 6: Final Thoughts
+%Chapter 5: Final Thoughts
 \chapter{Final Thoughts}
+\section {Limitations}
 %- Limitations of the current analysis
+\section {Future Work}
 %- Future Work
+In future work, we plan to investigate better splitting strategies
+and other more expressive lattices to improve the global precision of
+our analyses.
+\section {Final Conclusions}
 %- Final Conclusions
-
-\section {CGO}
-In this paper we have presented a new alias analysis technique that handles,
+In this work we have presented a new alias analysis technique that handles,
 within the same theoretical framework, the subtleties of pointer arithmetic
 and memory indexation.
 Our technique can disambiguate regions within arrays and C-like structs using
@@ -1382,10 +1382,6 @@ We have achieved precision in our algorithm by combining
 alias analysis with classic range analysis on the symbolic domain.
 Our analysis is fast, and handles cases that the implementations of
 pointer analyses currently available in LLVM cannot deal with.
-In future work, we plan to investiguate better splitting strategies
-and other more expressive lattices to improve the global precision of
-our analyses.
-
 
 % Aqui vem a parte da bibliografia: use o comando \ppgccbibliography indicando
 % apenas o nome do arquivo .bib (sem a extensão).
