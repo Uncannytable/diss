@@ -1,3 +1,22 @@
-
+Análise de ponteiros é uma das técnicas mais fundamentais que compiladores 
+utilizam para otmizar linguagens com ponteiros. No entanto, mesmo com toda a 
+atenção que este tópico já recebeu, as propostas do estado da arte atual 
+presentes em compiladores ainda lidam com desafios em relação à precisão e
+velocidade.
+Em particular, aritmética de ponteiros, um fator chave de linguagens como C e 
+C++, ainda precisa de soluções satisfatórias neste campo.
+Este trabalho apresenta um novo algorítmo para análise de ponteiros para resolver
+esse problema.
+O ponto chave da nossa proposta é combinar análise de ponteiros com análise 
+simbólica de largura de inteiros.
+Tal combinação nos permite desambiguar campos dentro de vetores e estruturas de 
+dados, de maneira efetiva obtendo maior precisão do que algorítmos tradicionais.
+Para validar nossa técnica, implementamos nosso algorítmo no compilador LLVM.
+Testes em uma vasta gama de benchmarks nos mostraram que podemos desambiguar 
+vários tipos de estruturas em C que as análises atuais do estado da arte não 
+conseguem lidar. Em particular, podemos desambiguar 1.35x mais comparações 
+do que as análises de ponteiros presentes no LLVM.
+Além, nossa análise é rápida: podemos lidar com um milhão de instruções em 
+assembly em 10 segundos.
 
 \keywords{Análise de Ponteiros, Análise Estática, Compiladores}

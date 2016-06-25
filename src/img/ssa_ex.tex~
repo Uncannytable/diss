@@ -1,0 +1,15 @@
+\documentclass[preview]{standalone}
+\usepackage{algpseudocode}
+
+\begin{document}
+  \begin{algorithmic}[1]
+    \If{$Q$}
+      \State $I\gets 5$
+      \State $J\gets 5$
+      \State $...$
+    \Else
+      \State $I\gets 6$
+      \State $J\gets 7$
+    \EndIf
+  \end{algorithmic}
+\end{document}

@@ -28,13 +28,15 @@
 %\usepackage{graphicx}
 \usepackage{tikz}
 \usepackage{xcolor,xspace}
-\usepackage[]{algorithm2e}
 \usepackage{thmtools}
 \usepackage{amsmath,amssymb}
 \usepackage{mathpartir}
 \usepackage{lettrine}
 \usepackage[modulo]{lineno}
 \usepackage{lipsum}
+
+\usepackage{afterpage}
+
 
 \declaretheorem[style=definition]{example}
 \declaretheorem[style=proof]{proof}
@@ -226,7 +228,100 @@ would not be of relevance for such application.
 \chapter{Literature Review}
 
 \section {Background}
+This section elaborates on a few key concepts and technologies used in this 
+work. Later sections give a more in depth look into the main concepts associated 
+with our approach.
 \subsection {SSA form}
+Data structure choices directly influence in the power and efficiency of program
+optimizations in our current optimizing compilers. Choosing poorly which data
+structures to use can inhibit program optimization to a point where  advanced 
+techniques can become undesirable. The static single assignment form (SSA) makes
+a useful class of optimizations more efficient and powerful. It was initially
+proposed in the 80s to, among other uses, verify the equality of variables in a 
+program \citep{Alpern88}.
+
+Consider the program slice in figure \ref{fig:ssa_ex}. Could it be said that $I$ 
+and $J$ are equivalent? Such answer will depend on which program point the 
+execution is currently. In the end of the \textbf{if-then-else} the answer will 
+depend, dynamically, on the value of $Q$, or no answer can be defined in a
+conservative static approach. However, in program point $4$, these variables 
+are equal even on the static view. To allow the detection of such equivalences 
+without taking into account different points in the program, it's necessary 
+to add several new variables for each variable in the original program. So, 
+in the example, it is necessary to break $I$ into three distinct variables. One
+in the \textbf{then} clause, one in the \textbf{else} clause and a last one in 
+the end of the \textbf{if-then-else}. The same is done for $J$ and now it's 
+possible to verify, statically, that the $I$ and $J$ from inside the 
+\textbf{then} clause are equivalent. 
+
+\begin{figure}[t!]
+  \centering
+\includegraphics[width=\linewidth]{img/ssa_ex}
+  \caption{Example where the SSA form can improve on the value numbering
+   optimization.}
+  \label{fig:ssa_ex}
+\end{figure}
+
+%first step
+The process of transforming a program into the SSA form requires two steps 
+\citep{Cytron89}.
+The first step consists in inserting $\phi$-functions into certain points on the 
+program. Such functions are special assignment states in the form $U\gets\phi
+(V,W,...)$, where $U,V,W,...$ are variables and the number of  operands 
+$V,W,...$ is the number of control flow predecessors of the program point where
+the $\phi$-function is inserted. Such control flow predecessors are listed in 
+order where the $j$th operand is associated with the $j$th predecessor. If 
+the program execution reaches the $\phi$-function from its $j$th predecessor, 
+then $U$ is assigned the value of the $j$th operand. Each execution of a $\phi$ 
+statement uses only one operand and which operand to be used depends on the 
+flow of execution. A $\phi$-function can be trivially placed for each variable 
+$V$ int the form $V\gets\phi(V,V,...)$ at the entrance to any CFG node in the 
+program without changing semantics.
+
+%second step
+The second step consists in giving new names for each variable V in the form 
+$V_i$ for various integers i. Each mention of $V$ in the program is replaced 
+by a mention of ones of these new names of $V$. Each new name $V_i$ for $V$ is
+the target of exactly one assignment statement in the program text. And along 
+any control flow path, if you consider any use of a new name $V_i$ for $V$ and 
+the corresponding use of $V$ in the original program, $V$ and $V_i$ will have 
+the same value. 
+
+%minimal SSA
+A program is in $minimalSSA$ form if it is in SSA form and if the number of 
+$\phi$-functions inserted is as small as possible \citep{Rosen88}. Extra 
+$\phi$-functions (more than the $minimalSSA$ form) might inhibit optimizations 
+by hiding useful facts. They also add unnecessary overhead to the process of 
+optimization. Thus it is very important to place $\phi$-functions only where 
+they are required to maintain the SSA form.
+
+%ssa conclusion
+After a program has been transformed into the static single assignment form 
+(SSA), it has two useful properties. First, each use of a variable is reached 
+by exactly one assignment to that variable. Secondly, the programs contains 
+$\phi$-functions that distinguish values of variables obtained through distinct
+incoming control flow paths.
+
+%e-ssa
+The Extended Static Single Assignment form is a cheaply computable extension of
+SSA \citep{Bodik00}. This extension differs from the $minimalSSA$ form by 
+introducing $\sigma$-functions that redefine the program's variables in 
+points of interest, such as branches and switches. The main advantage of this 
+$\sigma$-functions are inserted, for each variable appearing in the conditional 
+expression, into the CFP out-edges of the conditional branch. Because of these
+assignments, each outcome of the conditional is associated with a distinct 
+variable name, which allows for splitting the ranges of the conditional 
+variables in range analysis, for example, with each of its $\sigma$-assignments
+taking distinct pieces of their range. The $\sigma$-functions are usually placed 
+at the beginning of the basic blocks targeted by the branch.
+
+\begin{figure}[t!]
+  \centering
+\includegraphics[width=300px]{img/essa}
+  \caption{Example showing the Extended Static Single Assignment form 
+  transformation by inserting $\sigma$-functions.}
+  \label{fig:essa}
+\end{figure}
 
 \subsection {Control Flow Graphs}
 
