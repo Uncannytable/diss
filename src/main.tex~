@@ -360,7 +360,7 @@ several compiler optimizations, but it is not effective do validate memory
 accesses or handle pointers. We adopt in this work a symbolic range analysis 
 \citep{Nazare14}. The analysis we use adopts symbolic ranges and a symbolic
 kernel, which is a set formed by either constants known statically or variables 
-defined as input values, such as formal parameters of functions. 
+defined as input values, such as formal parameters of functions.
 
 \section {Pointer Disambiguation for Parallelization}
 %- Work on pointer disambiguation for parallelization
