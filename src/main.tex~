@@ -85,7 +85,7 @@
 %  approval=[-2.5cm][1]{aprovalsheet},
   abstract={Resumo}{resumo},
   abstract=[english]{Abstract}{abstract},
-  abstract={Extended Abstract}{resumoest},
+%  abstract={Extended Abstract}{resumoest},
   dedication={dedicatoria},
   ack={agradecimentos},
 %  ack=[Acknowledgments]{ack},
@@ -360,7 +360,22 @@ several compiler optimizations, but it is not effective do validate memory
 accesses or handle pointers. We adopt in this work a symbolic range analysis 
 \citep{Nazare14}. The analysis we use adopts symbolic ranges and a symbolic
 kernel, which is a set formed by either constants known statically or variables 
-defined as input values, such as formal parameters of functions.
+defined as input values, such as formal parameters of functions, reads and 
+loads. An abstract interpretation framework generates invariants as symbolic 
+ranges over the program's symbolic kernel, extracts a set of interval 
+constraints from the program and performs a fix-point algorithm until 
+convergence. 
+
+The symbolic range analysis uses symbolic expressions for the lower and upper 
+bounds of ranges. $E$ is a symbolic expression, if and only if, $E$ is defined 
+by the grammar below. In this grammar $s$ is a symbol and $n \in \mathbb{N}$. 
+ 
+{\centering $E~::=~n~|~s~|~min(E,E)~|~max(E,E)~|~E-E~|~E+E~|~E/E~|~E mod E~|~E*E$}
+
+Even though there is a natural lattice between integer values coupled with both
+positive and negative infinities, there is no ordering between two distinct
+elements of the symbolic kernel of a program. The analysis provides a way to 
+define such ordering with a valuation of symbolic expressions.
 
 \section {Pointer Disambiguation for Parallelization}
 %- Work on pointer disambiguation for parallelization
