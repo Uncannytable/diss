@@ -227,11 +227,11 @@ would not be of relevance for such application.
 %Chapter 2: Literature Review
 \chapter{Literature Review}
 
-\section {Background}
-This section elaborates on a few key concepts and technologies used in this 
-work. Later sections give a more in depth look into the main concepts associated 
-with our approach.
-\subsection {SSA form}
+%\section {Background}
+%This section elaborates on a few key concepts and technologies used in this 
+%work. Later sections give a more in depth look into the main concepts associated 
+%with our approach.
+\section {SSA form} %\subsection {SSA form}
 Data structure choices directly influence in the power and efficiency of program
 optimizations in our current optimizing compilers. Choosing poorly which data
 structures to use can inhibit program optimization to a point where  advanced 
@@ -323,11 +323,11 @@ at the beginning of the basic blocks targeted by the branch.
   \label{fig:essa}
 \end{figure}
 
-\subsection {Control Flow Graphs}
+%\subsection {Control Flow Graphs}
 
-\subsection {LLVM}
+%\subsection {LLVM}
 
-\subsection {Lattice}
+%\subsection {Lattice}
 
 \section {Points-to Analysis}
 %- Work on points-to analysis
@@ -1493,9 +1493,97 @@ correlation between time and number of pointers is 0.975.
 \chapter{Final Thoughts}
 \section {Limitations}
 %- Limitations of the current analysis
+Using the symbolic range analysis for comparing offsets is inherently 
+imprecise. Issues lie on comparing two symbolic expressions and its 
+difficulties, especially on comparing lower bounds with upper bounds from two
+different variables, and on local relationships of variables with overlapping 
+ranges.
+
+Figure \ref{fig:lim1} shows the first issue. Analyzing this algorithm, the 
+symbolic range analysis returns the following ranges: $R(\sigma_a) = [a, b-1]$,
+$R(\sigma_b) = [a+1, b]$. This impedes the disambiguation of the two array 
+accesses, $V[\sigma_a]$ and $V[\sigma_b]$, since it is impossible to prove that
+ the ranges of $\sigma_a$ and $\sigma_b$ do not overlap. To do so, it would be 
+ necessary for the valuation of symbolic expressions to be able to say that 
+ $b-1 < a+1$ or that $b < a$, which it cannot do. So in this example, even 
+ though it is obvious that the two array accesses cannot alias to the same 
+ location, since their offsets are obligatorily different by the $if$ 
+ condition. 
+ 
+Figure \ref{fig:lim2} shows the second issue. It again shows two array accesses 
+that are obviously disjoint that our analysis cannot disambiguate. Analyzing this 
+algorithm, the symbolic range analysis returns the following ranges: 
+$R(i) = [0, 9]$, $R(j) = [1, 10]$. It's clear that these ranges overlap and 
+that our analysis could not say that they are disjoint even though, at the 
+array accesses, $j$ is aways different and greater than $i$. 
+
+These examples show two very interesting limitations of our analysis. They 
+both can disable optimizations such as automatic parallelization of code and 
+loop invariant code motion on some cases in which these optimizations might be 
+desirable. It is clear that simply verifying if two offset ranges are disjoint 
+is not enough to achieve ideal precision, since they can hide relationships 
+between variables that are aways true when the two variables are alive and 
+that can help in disambiguating two pointers, even if there is a relationship 
+between these pointers or between the offsets that constitute such pointers. 
+ 
+
+\begin{figure}[t!]
+  \centering
+\includegraphics[width=\linewidth]{img/limitation}
+  \caption{}
+  \label{fig:lim1}
+\end{figure}
+
+\begin{figure}[t!]
+  \centering
+\includegraphics[width=\linewidth]{img/limitation2}
+  \caption{}
+  \label{fig:lim2}
+\end{figure}
+
 \section {Future Work}
+The reason for the limitations exposed before lays on the fact that our analysis 
+use range intervals to disambiguate pointers.
+In the examples of figure \ref{fig:lim1} and figure \ref{fig:lim2}, the ranges 
+of integer variables might either overlap or aren't comparable. But, in the 
+examples, variables do have relationships between them that allow for 
+disambiguation in the form of inequalities ($a<b$ and $i<j$). To take advantage 
+of such relationships we intend to use a lattice similar to Pentagons.
+
+Pentagons is an abstract domain invented by Logozzo and F\"{a}hndrich
+to infer symbolic bounds to the integer variables used in
+programs \citep{Logozzo08,Logozzo10}.
+This abstract domain is formed by the combination of two
+lattices.
+The first lattice is the {\em integer interval domain} \citep{Cousot77}, which
+maps integer variables to ranges $[l, u]$ of numeric lower ($l$) and upper ($u$)
+bounds.
+The second lattice is the {\em strict upper bound}, which maps each variable
+$v$ to a set $L_<$ of other variables, so that if $u \in L_<(v)$, at a given
+program point $\mathtt{p}$, then $u < v$ at $\mathtt{p}$. 
+
+Since their debut \citep{Logozzo08}, Pentagons have been used in several
+different ways.
+For instance, Logozzo and F\"{a}hndrich have employed this domain to eliminate
+array bound checks in strongly typed programming
+languages \citep{Logozzo10}, and to ensure absence of division by zero or
+integer overflows in programs.
+Moreover, Nazar\'{e} {\em et al.} \citep{Nazare14} have used Pentagons to reduce
+the overhead imposed by AddressSanitizer \citep{Serebryany12} to guard C against
+out-of-bounds memory accesses.
+The appeal of pentagons comes from two facts.
+First, this abstract domain can be computed efficiently -- in quadratic time on
+the number of program variables.
+Second, as an enabler of compiler optimizations, Pentagons have been
+proven to be substantially more effective than other forms of abstract
+interpretation of similar runtime \citep{Logozzo08}.
+
 %- Future Work
-In future work, we plan to investigate better splitting strategies
+Our initial and recent use of pentagons for such purpose has been successful. 
+It is able to handle programs as large as SPEC's gcc in a few minutes and go
+through SPEC CPU 2006 \citep{Henning06} in able time. It has proven very 
+useful in some cases, such as SPEC \texttt{470.lbm}.  
+In further future work, we plan to investigate better splitting strategies
 and other more expressive lattices to improve the global precision of
 our analyses.
 \section {Final Conclusions}

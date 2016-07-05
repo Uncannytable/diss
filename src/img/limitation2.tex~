@@ -1,0 +1,16 @@
+\documentclass[preview]{standalone}
+\usepackage{algpseudocode}
+
+\begin{document}
+  \begin{algorithmic}[1]
+    \State $...$
+    \State $i = 0$
+    \While{$i < 10$}
+      \State $j = i + 1$
+      \State $V[i]\gets \bullet$
+      \State $V[j]\gets \bullet$
+      \State $i++$
+    \EndWhile
+    \State $...$
+  \end{algorithmic}
+\end{document}
