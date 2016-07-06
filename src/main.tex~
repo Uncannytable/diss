@@ -225,7 +225,7 @@ current approach by using a numerical range analysis, since a symbolic approach
 would not be of relevance for such application.
 
 %Chapter 2: Literature Review
-\chapter{Literature Review}
+\chapter{Background}
 
 %\section {Background}
 %This section elaborates on a few key concepts and technologies used in this 
@@ -323,11 +323,40 @@ at the beginning of the basic blocks targeted by the branch.
   \label{fig:essa}
 \end{figure}
 
-\subsection {Control Flow Graphs}
+%\subsection {Control Flow Graphs}
 
-\subsection {LLVM}
+\section{LLVM} %\subsection {LLVM}
+LLVM (Low-Level Virtual Machine) \citep{Lattner04} is a compiler framework that aims to make
+program analyses and transformations available for any piece of software in a 
+transparent way for the programmers. It has two main characteristics are a code
+representation with several features that serve as common a representation 
+for analyses and transformations and machine code translation, and a compiler 
+design that exploits its representation to provide a multitude of capabilities.
 
-\subsection {Lattice}
+The LLVM code representation uses a RISC-like instruction set allied to 
+higher level information to describe programs in a useful way for analyses and 
+transformations. This higher level information includes type information, 
+explicit control flow graphs and an explicit data-flow representation using an
+infinite, typed register set in the SSA form. This code representation has 
+several features, such as a low-level language independent type system that can 
+be used to implement data-types and operations from higher-level languages, 
+instructions for performing type conversions and address arithmetic, and two
+low-level exceptions-handling instructions for implementing exception semantics 
+from languages who have it. The LLVM representation is independent from the 
+source code language and it utilizes a low-level instruction set and memory 
+model that are only slightly richer than common assembly languages. Its type 
+system does not prevent representing code with very little type information and 
+it does not impose any particular runtime requirement on programs.
+
+The LLVM compiler framework exploits its code representation to provide a 
+combination of five capabilities: persistent program information, offline code 
+generation, user-based profiling and optimization, transparent runtime model and
+uniform, whole-program compilation. Over the last ten years, LLVM has 
+somewhat altered this landscape and it is now used as a common 
+infrastructure to implement a broad variety of statically and runtime compiled 
+languages. We've used it to implement the analysis present in this work.
+
+%\subsection {Lattice}
 
 \section {Points-to Analysis}
 %- Work on points-to analysis
