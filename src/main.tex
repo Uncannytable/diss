@@ -123,6 +123,7 @@ passed it ten minutes ago! Faster!'}{Lewis Carroll},
 
 %Chapter 1: Introduction
 \chapter{Introduction}
+\label {chap:introduction}
 \section {Context}
 % the importance of Alias Analysis
 Pointer analysis is one of the most fundamental compiler technologies.
@@ -144,7 +145,20 @@ Mainstream compilers still struggle to distinguish intervals within the
 same array.
 In other words, state-of-the-art pointer analyses often fail to disambiguate
 regions addressed from a common base pointer via different
-offsets, as explained by Yong and Horwitz~\citep{Yong04}.
+offsets, as explained by Yong and Horwitz~\citep{Yong04}. Figure 
+\ref{fig:intro_ex} shows an example that state-of-the-art pointer analyses 
+tend not to deal with satisfactorily. In the example, both stores on the $r$ 
+array posses different offsets and they do not alias. To figure out that such 
+offsets are disjoint it is necessary to verify their ranges and add a new layer
+of analysis to the current pointer analyses available.
+
+\begin{figure}[t!]
+  \centering
+\includegraphics[width=\linewidth]{img/introex}
+  \caption{Example.}
+  \label{fig:intro_ex}
+\end{figure}
+
 Field-sensitive pointer analysis, provide a partial solution to this problem.
 These analyses can distinguish different fields within a record, such
 as a struct in C~\citep{Pearce04}, or a class in Java~\citep{Yan11}.
@@ -224,8 +238,32 @@ The layout and content inference analysis used in these papers differed to our
 current approach by using a numerical range analysis, since a symbolic approach 
 would not be of relevance for such application.
 
+\section {Next Chapters}
+
+This work is divided in the following structure: 
+\begin{itemize}
+\item Chapter \ref{chap:introduction} presented an introduction describing the context
+of points-to analysis, the problem faced by this work, our solution of adding 
+a layer of symbolic range analysis to points-to analysis, and our publications.
+\item Chapter \ref{chap:background} presents the background behind our work, the 
+concepts and other works used. It also does a literature review of other related 
+publications. The topics and concepts it covers are the SSA form, the LLVM 
+compiler framework, points-to analysis, range analysis, the use of pointer 
+disambiguation for automatic parallelization of code and the merging of 
+points-to analysis with range analysis. 
+\item Chapter \ref{chap:work} describes our points-to analysis. It gives an 
+overview of our algorithm, shows how we combine the symbolic range analysis 
+with pointer analysis, describes the local and global parts of our work, 
+discusses about the algorithm's complexity and end with an example. 
+\item Chapter \ref{chap:exp} shows our experiments and results. 
+\item Chapter \ref{chap:final} concludes this dissertation. It shows the
+limitations of our work, discusses future work to be done and issues final
+conclusions.
+\end{itemize}
+
 %Chapter 2: Literature Review
 \chapter{Background}
+\label {chap:background}
 
 %\section {Background}
 %This section elaborates on a few key concepts and technologies used in this 
@@ -461,6 +499,7 @@ pairs formed by variables and program points.
 
 %Chapter 3: A New Points-to Analysis
 \chapter{A New Points-to Analysis}
+\label {chap:work}
 
 \section{Overview}
 \label{sec:ovf}
@@ -1521,6 +1560,7 @@ correlation between time and number of pointers is 0.975.
 
 %Chapter 5: Final Thoughts
 \chapter{Final Thoughts}
+\label {chap:final}
 \section {Limitations}
 %- Limitations of the current analysis
 Using the symbolic range analysis for comparing offsets is inherently 

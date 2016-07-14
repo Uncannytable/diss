@@ -1,0 +1,25 @@
+\documentclass[preview]{standalone}
+\usepackage{listings}
+
+\begin{document}
+\lstset{language=C,  
+        numbers=left,
+        stepnumber=1,    
+        firstnumber=1,
+        numberfirstline=true
+       } 
+  \begin{lstlisting}
+1:  char* duplicate (int size, char* v) {
+2:    if(size > 0) {
+3:      char* r = malloc(size*2);
+4:      int i;
+5:      for(i = 0; i < size; i++) {
+6:        r[i] = v[i];
+7:        r[i+size] = v[i];
+8:      }
+9:    }
+10:    else return NULL;
+11:  }
+  \end{lstlisting}
+
+\end{document}
