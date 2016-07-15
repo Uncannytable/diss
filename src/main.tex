@@ -1656,6 +1656,7 @@ useful in some cases, such as SPEC \texttt{470.lbm}.
 In further future work, we plan to investigate better splitting strategies
 and other more expressive lattices to improve the global precision of
 our analyses.
+
 \section {Final Conclusions}
 %- Final Conclusions
 In this work we have presented a new alias analysis technique that handles,
@@ -1667,6 +1668,19 @@ We have achieved precision in our algorithm by combining
 alias analysis with classic range analysis on the symbolic domain.
 Our analysis is fast, and handles cases that the implementations of
 pointer analyses currently available in LLVM cannot deal with.
+
+Apart from this contribution, there is plenty to study on the area of 
+pointer analysis, and the area of pointer arithmetics still needs quite a bit 
+of research. Its dire need are very efficient static analyses that run fast on 
+very big programs and very lean dynamic analyses and monitors. Our focus has 
+been on the static analysis side. Lazy implementations, where main computations 
+are made on the query moment, seem to be a very promising take on alias 
+analyses and can expedite runtime. Focus on integrating new proposals to 
+bigger compilation frameworks and existing optimizations should also be explored 
+by the community on an effort of making new technology more usable across 
+researchers and projects. There is still a lot of work to be done and we hope 
+that our contribution can be only a building block of a much bigger effort from 
+many more scientists.
 
 % Aqui vem a parte da bibliografia: use o comando \ppgccbibliography indicando
 % apenas o nome do arquivo .bib (sem a extensão).
