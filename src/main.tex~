@@ -427,9 +427,8 @@ pointer analysis, although it is more precise than typical pointer analysis.
 It has been applied to a variety of problems, such as memory safety and finding 
 memory leaks, dereferences of dangling pointers, and 
 discovering cases where a block of memory is freed more than once,
-finding array out-of-bounds errors, checking type-state properties, ensuring 
-that a method to reverse a linked list does not introduce cycles 
-into the list and verifying that a sort method is correct.
+finding array out-of-bounds errors, checking type-state properties, and 
+verifying that a sort method is correct.
 
 \section {Range Analysis}
 %- Work on range analysis
@@ -476,11 +475,24 @@ The key difference between our work and this line of research is the algorithm
 to solve pointer relations: they resort to integer linear programming (ILP) or
 the Greatest Common Divisor test to solve diophantine equations, whereas we
 do abstract interpretation.
-Even Rugina and Rinard~\citep{Rugina05}, who we believe is the state-of-the-art
-approach in the field today, use integer linear programming to solve symbolic
-relations between variables.
-We speculate that the ILP approach is too expensive to be used in large programs;
-hence, concessions must be made for the sake of speed.
+
+We believe that the state-of-the-art approach in the field today is Rugina and 
+Rinard~\citep{Rugina05}. Their paper presents a novel framework for the symbolic
+bounds analysis of pointers, array indexes, and accessed memory regions. 
+Instead of using traditional fixed-point algorithms, it formulates each analysis 
+problem as a system of inequality constraints between symbolic bound 
+polynomials. It then reduces the constraint system to a linear program. The 
+solution to the linear program provides symbolic lower and upper bounds for 
+the values of pointer and array index variables and for the regions of memory 
+that each statement and procedure accesses.
+Their technique was applied to divide and conquer programs that access disjoint 
+regions of dynamically allocated arrays. Experimental results showed that their 
+algorithm can verify the absence of data races in benchmark parallel programs, 
+detect the available parallelism in benchmark serial programs, and verify that 
+both sets of benchmark programs do not violate their array bounds.
+
+We speculate that the ILP approach is too expensive to be used in large 
+programs; hence, concessions must be made for the sake of speed.
 For instance, whereas the previous literature that we know restrict their
 work to pointers within loops, we can analyze programs with over one million
 assembly instructions in a few seconds.
