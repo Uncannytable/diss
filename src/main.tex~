@@ -412,6 +412,25 @@ augmented to map pointers to sets of locations plus ranges.
 Furthermore, the use of our approach does not prevent the employment of
 acceleration techniques such as lazy cycle detection~\citep{Hardekopf07a}, or
 wave propagation~\citep{Pereira09b}.
+
+Another analysis technique, originally investigated by Reynolds 
+~\citep{Reynolds68} for a Lisp-like language, is shape-analysis and it aims to 
+give, for each program point a finite characterization of the possible 
+"shapes" that the program's heap-allocated data structures can have at that 
+point. Shapes characterize data structures. 
+A shape descriptor could indicate whether the heap contains a singly linked 
+list, potentially with a cycle, a doubly linked list, a binary tree, and so on.
+Shape Analysis is a static code analysis 
+that discovers and verifies properties of linked, dynamically 
+allocated data structures in computer programs. It is a form of 
+pointer analysis, although it is more precise than typical pointer analysis.
+It has been applied to a variety of problems, such as memory safety and finding 
+memory leaks, dereferences of dangling pointers, and 
+discovering cases where a block of memory is freed more than once,
+finding array out-of-bounds errors, checking type-state properties, ensuring 
+that a method to reverse a linked list does not introduce cycles 
+into the list and verifying that a sort method is correct.
+
 \section {Range Analysis}
 %- Work on range analysis
 Range Analysis is a compiler technique that aims to to find, statically, minimum
@@ -1679,8 +1698,8 @@ analyses and can expedite runtime. Focus on integrating new proposals to
 bigger compilation frameworks and existing optimizations should also be explored 
 by the community on an effort of making new technology more usable across 
 researchers and projects. There is still a lot of work to be done and we hope 
-that our contribution can be only a building of a much bigger effort from many 
-more scientists.
+that our contribution can be only a building block of a much bigger effort from 
+many more scientists.
 
 % Aqui vem a parte da bibliografia: use o comando \ppgccbibliography indicando
 % apenas o nome do arquivo .bib (sem a extensão).

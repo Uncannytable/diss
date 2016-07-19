@@ -1,9 +1,9 @@
 @inproceedings{Reynolds68,
   author = {John C. Reynolds},
   title = "Automatic computation of data set definitions",
-  booktitle = {Proceedings of the IFIP Congress},
-  year = {1968},
-  publisher = {North-Holland}
+  booktitle = {CGO},
+  year = {2016},
+  publisher = {ACM}
 }
 
 @inproceedings{Paisante16,
