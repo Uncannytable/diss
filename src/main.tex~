@@ -469,8 +469,8 @@ There exist previous work that used similar lattices as ours, albeit different
 resolution algorithms.
 For instance, much of the work on automatic parallelization has some way to
 associate symbolic offsets, usually loop bounds, with pointers.
-Michael Wolfe~\citep[Ch.7]{Wolfe96} and Aho {et al.}~\citep[Ch.11]{Aho06} have entire
-chapters devoted to this issue.
+Michael Wolfe~\citep[Ch.7]{Wolfe96} and Aho {et al.}~\citep[Ch.11]{Aho06} have 
+entire chapters devoted to this issue.
 The key difference between our work and this line of research is the algorithm
 to solve pointer relations: they resort to integer linear programming (ILP) or
 the Greatest Common Divisor test to solve diophantine equations, whereas we
@@ -503,8 +503,24 @@ solves static analysis via abstract interpretation techniques.
 However, to the best of our knowledge, these approaches have a fundamental
 difference to our work: they use integer intervals a l\`{a}
 Cousot~\citep{Cousot77}, whereas we use symbolic intervals.
+
 The inspiration for much of this work springs from Balakrishnan and Reps notion
-of {\em Value Set} Analysis~\citep{Balakrishnan04}.
+of {\em Value Set} Analysis~\citep{Balakrishnan04}. It is a static analysis 
+for tracking the values of data objects. {\em Value Set} Analysis
+uses an abstract domain for representing the set of
+values that each data object can hold at each program point. The algorithm 
+tracks memory addresses and integers values simultaneously. So it 
+determines an over-approximation of the possible values that each variable of 
+each type can hold at each program point. It tracks these values that a 
+program's data objects can hold, using a set of abstract data
+objects called abstract locations. The idea behind such
+abstraction is to exploit the fact that accesses on the variables of a 
+program written in a high-level language appear as either static addresses
+(for globals) or static stack-frame offsets (for locals). The data object 
+in the original source-code program that corresponds to a given abstract location
+can be one or more scalar, struct or array variables, but can also consist of just 
+a segment of a scalar, struct or array variable.
+
 Integer intervals have also being used by Yong {\em et al.}~\citep{Yong04} and,
 more recently, by Oh {\em et al.}~\citep{Oh14}.
 In the latter case, Oh {\em et al.} use pointer disambiguation incidentally, to
