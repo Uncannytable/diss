@@ -155,7 +155,8 @@ of analysis to the current pointer analyses available.
 \begin{figure}[t!]
   \centering
 \includegraphics[width=\linewidth]{img/introex}
-  \caption{Example.}
+  \caption{Example that state-of-the-art pointer analyses handle 
+  unsatisfactorily.}
   \label{fig:intro_ex}
 \end{figure}
 
@@ -226,7 +227,7 @@ Code Generation and Optimization (CGO) of 2016 held in Barcelona, Spain
 \citep{Paisante16}. 
 
 The technology behind it is also present on two other publications 
-\citep{Paisante14, Saggioro15}. In them, we've used the algorithm presented here
+\citep{Paisante14, Saggioro15}. In these papers, we've used the algorithm presented here
 to infer the layout and the content of buffers transfered through the network. 
 This was useful for verifying, in a safe communication line, if the information 
 transfered between two programs through a network should be considered potentially 
@@ -264,6 +265,54 @@ conclusions.
 %Chapter 2: Literature Review
 \chapter{Background}
 \label {chap:background}
+
+\section {Lattice}
+
+A lattice is an algebraic structure that consists of a partially ordered set in 
+which every two elements have a unique least upper bound (or join) and 
+a unique greatest lower bound (or meet). 
+An example is given by the natural numbers, partially ordered by divisibility, 
+for which the unique least upper bound is the least common multiple and the 
+unique greatest lower bound is the greatest common divisor.
+
+If $L=(S, \le, \vee, \wedge, \bot, \top)$ is a complete lattice, and $e_1 \in S$
+and $e_2 \in S$, then we let $e_{lub} = (e_1 \vee e_1) \in S$ be the least 
+upper bound of the set $\{e_1, e_2\}$. The least upper bound $e_{lub}$ has the 
+following properties:
+
+\begin{itemize}
+\item $e_1 \le e_{lub}$ and $e_2 \le e_{lub}$
+\item For any element $e' \in S$, if $e_1 \le e'$ and $e_2 \le e'$, then 
+$e_{lub} \le e'$
+\end{itemize}
+
+In the same way, we let $e_{glb} = (e_1 \wedge e_1) \in S$ be the greatest 
+lower bound of the set $\{e_1, e_2\}$. The greatest lower bound $e_{glb}$ has the 
+following properties:
+
+\begin{itemize}
+\item $e_{glb} \le e_1 $ and $e_{glb} \le e_2$
+\item For any element $e' \in S$, if $e' \le e_1$ and $e' \le e_2$, then 
+$e' \le e_{glb}$
+\end{itemize}
+
+While the symbols $\vee$ and $\wedge$ correspond to the join and meet operators
+respectively. $\bot$ and $\top$ correspond to bottom and top respectively.
+Bottom ($\bot$) is the multiplicative one for the join operator and the 
+multiplicative zero for the meet operator. Top ($\top$) is the multiplicative 
+one for the meet operator and the multiplicative zero for the join operator:
+
+\begin{itemize}
+\item $\forall x \in S,~(\bot \vee x) = x$
+\item $\forall x \in S,~(\top \vee x) = \top$
+\item $\forall x \in S,~(\top \wedge x) = x$
+\item $\forall x \in S,~(\bot \wedge x) = \bot$
+\end{itemize}
+
+If a lattice is well-defined for only one of these operators, it is called 
+a semilattice. Most dataflow analyses require only the semilattice structure 
+to work. The meet operator (or the join operator) in a semilattice defines a 
+partial order. The partial order is reflexive, antisymmetric and transitive. 
 
 %\section {Background}
 %This section elaborates on a few key concepts and technologies used in this 
@@ -498,7 +547,7 @@ work to pointers within loops, we can analyze programs with over one million
 assembly instructions in a few seconds.
 \section {Points-to with Range Analyses}
 %- Previous attempts to merge points-to and range analyses
-There exist work that, like ours, also associates intervals with pointers, and
+There exists work that, like ours, also associates intervals with pointers, and
 solves static analysis via abstract interpretation techniques.
 However, to the best of our knowledge, these approaches have a fundamental
 difference to our work: they use integer intervals a l\`{a}
@@ -546,6 +595,15 @@ pairs formed by variables and program points.
 %Chapter 3: A New Points-to Analysis
 \chapter{A New Points-to Analysis}
 \label {chap:work}
+
+The goal of this chapter is twofold. First, we want to illustrate our
+novel points-to analysis with an example. Section 3.1 presents this
+example, and introduces the reader to a few insights that came out of
+this work. After that, we discuss the technical details of our
+contribution. To this end, Section 3.2 introduces the \ranboxes
+lattice, and explains how to build this structure. This lattice will
+gives us, later, a way to answer the question: ``do points $p_1$ and
+$p_2$ alias each other?''
 
 \section{Overview}
 \label{sec:ovf}
@@ -1617,14 +1675,14 @@ ranges.
 
 Figure \ref{fig:lim1} shows the first issue. Analyzing this algorithm, the 
 symbolic range analysis returns the following ranges: $R(\sigma_a) = [a, b-1]$,
-$R(\sigma_b) = [a+1, b]$. This impedes the disambiguation of the two array 
+$R(\sigma_b) = [a+1, b]$. This hinders the disambiguation of the two array 
 accesses, $V[\sigma_a]$ and $V[\sigma_b]$, since it is impossible to prove that
  the ranges of $\sigma_a$ and $\sigma_b$ do not overlap. To do so, it would be 
  necessary for the valuation of symbolic expressions to be able to say that 
  $b-1 < a+1$ or that $b < a$, which it cannot do. So in this example, even 
  though it is obvious that the two array accesses cannot alias to the same 
- location, since their offsets are obligatorily different by the $if$ 
- condition. 
+ location since their offsets are obligatorily different by the \textbf{if} 
+ condition, we cannot disambiguate them. 
  
 Figure \ref{fig:lim2} shows the second issue. It again shows two array accesses 
 that are obviously disjoint that our analysis cannot disambiguate. Analyzing this 
@@ -1646,14 +1704,20 @@ between these pointers or between the offsets that constitute such pointers.
 \begin{figure}[t!]
   \centering
 \includegraphics[width=\linewidth]{img/limitation}
-  \caption{}
+  \caption{Example of our first described limitation. Even though we cannot 
+  prove that the symbolic ranges of $\sigma_a$ and $\sigma_b$ do not overlap, 
+  it is obvious that $\sigma_a$ is aways different from $\sigma_b$ because of 
+  the \textbf{if} condition.}
   \label{fig:lim1}
 \end{figure}
 
 \begin{figure}[t!]
   \centering
 \includegraphics[width=\linewidth]{img/limitation2}
-  \caption{}
+  \caption{Example of our second described limitation. Even though we cannot 
+  prove that the ranges of $i$ and $j$ do not overlap, 
+  it is obvious that $j$ is aways different from $i$ because it is 
+  aways greater.}
   \label{fig:lim2}
 \end{figure}
 
@@ -1699,7 +1763,7 @@ Our initial and recent use of pentagons for such purpose has been successful.
 It is able to handle programs as large as SPEC's gcc in a few minutes and go
 through SPEC CPU 2006 \citep{Henning06} in able time. It has proven very 
 useful in some cases, such as SPEC \texttt{470.lbm}.  
-In further future work, we plan to investigate better splitting strategies
+In future work, we plan to investigate better splitting strategies
 and other more expressive lattices to improve the global precision of
 our analyses.
 
@@ -1717,8 +1781,8 @@ pointer analyses currently available in LLVM cannot deal with.
 
 Apart from this contribution, there is plenty to study on the area of 
 pointer analysis, and the area of pointer arithmetics still needs quite a bit 
-of research. Its dire need are very efficient static analyses that run fast on 
-very big programs and very lean dynamic analyses and monitors. Our focus has 
+of research. Their dire needs are very efficient static analyses that run fast on 
+very big programs, and very lean dynamic analyses. Our focus has 
 been on the static analysis side. Lazy implementations, where main computations 
 are made on the query moment, seem to be a very promising take on alias 
 analyses and can expedite runtime. Focus on integrating new proposals to 

@@ -16,7 +16,7 @@ Testes em uma vasta gama de benchmarks nos mostraram que podemos desambiguar
 vários tipos de estruturas em C que as análises atuais do estado da arte não 
 conseguem lidar. Em particular, podemos desambiguar 1.35x mais comparações 
 do que as análises de ponteiros presentes no LLVM.
-Além disso, nossa análise é rápida: podemos lidar com um milhão de instruções em 
+Além, nossa análise é rápida: podemos lidar com um milhão de instruções em 
 assembly em 10 segundos.
 
 \keywords{Análise de Ponteiros, Análise Estática, Compiladores}
