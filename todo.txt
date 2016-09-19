@@ -1,0 +1,12 @@
+TODOs:
+
+-Add OO and C++ applications of our analysis (like compiler created pointers)
+-Explain better why pointer analysis is important (more motivation on the intro)
+-Explain why there is an interprocedural CFG in the text and what is it
+-Explain better how we handle loads and stores
+-Improve Lattice explanation (references and examples)
+-Could our analysis be used for virtual machines issues
+-Add a paragraph on how to compare ranges
+-Write a better aknowledgements section, adding Maroua's role and etc
+-Explain better the benchmarks (if possible)
+

@@ -227,7 +227,7 @@ Code Generation and Optimization (CGO) of 2016 held in Barcelona, Spain
 \citep{Paisante16}. 
 
 The technology behind it is also present on two other publications 
-\citep{Paisante14, Saggioro15}. In these papers, we've used the algorithm presented here
+\citep{Paisante14, Saggioro15}. In these papers, the algorithm presented here was used
 to infer the layout and the content of buffers transfered through the network. 
 This was useful for verifying, in a safe communication line, if the information 
 transfered between two programs through a network should be considered potentially 
@@ -235,7 +235,7 @@ dangerous or not. If proven not dangerous, guards for checking integer overflows
 may not be necessary. These articles proposed methods for such verification to 
 be used on the internet of things (IoT), where simple devices could run 
 significantly faster with a reduced number of integer overflow checks. 
-The layout and content inference analysis used in these papers differed to our 
+The layout and content inference analysis used in these papers differed from our 
 current approach by using a numerical range analysis, since a symbolic approach 
 would not be of relevance for such application.
 
@@ -247,7 +247,7 @@ This work is divided in the following structure:
 of points-to analysis, the problem faced by this work, our solution of adding 
 a layer of symbolic range analysis to points-to analysis, and our publications.
 \item Chapter \ref{chap:background} presents the background behind our work, the 
-concepts and other works used. It also does a literature review of other related 
+concepts and other related works. It also does a literature review of other related 
 publications. The topics and concepts it covers are the SSA form, the LLVM 
 compiler framework, points-to analysis, range analysis, the use of pointer 
 disambiguation for automatic parallelization of code and the merging of 
@@ -602,7 +602,7 @@ example, and introduces the reader to a few insights that came out of
 this work. After that, we discuss the technical details of our
 contribution. To this end, Section 3.2 introduces the \ranboxes
 lattice, and explains how to build this structure. This lattice will
-gives us, later, a way to answer the question: ``do points $p_1$ and
+gives us, later, a way to answer the question: ``do pointers $p_1$ and
 $p_2$ alias each other?''
 
 \section{Overview}
@@ -816,7 +816,7 @@ $p$ -- a formal parameter -- through a $\phi$-function.
 \begin{figure}[t!]
   \centering
 \includegraphics{img/ex3}
-  \caption{Control flow graph of program seen in Figure~\ref{fig:exmotiv}}
+  \caption{Interprocedural control flow graph of program seen in Figure~\ref{fig:exmotiv}}
   \label{fig:ex3}
 \end{figure}
 
@@ -1184,7 +1184,7 @@ memory.
 In other words, when interpreting stores, e.g., $q = *p$,
 we assign the top value of our lattice to $q$.
 This decision is pragmatic.
-As we shall explain in Section~\ref{sec:exp}, a typical compilation
+As we shall explain in Chapter~\ref{chap:exp}, a typical compilation
 infra-structure already contains analyses that are able to track the propagation
 of pointer information throughout memory.
 Our goal is not to solve this problem.
