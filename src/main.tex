@@ -270,10 +270,18 @@ conclusions.
 
 A lattice is an algebraic structure that consists of a partially ordered set in 
 which every two elements have a unique least upper bound (or join) and 
-a unique greatest lower bound (or meet). 
+a unique greatest lower bound (or meet) \citep{Nation16}. 
 An example is given by the natural numbers, partially ordered by divisibility, 
 for which the unique least upper bound is the least common multiple and the 
-unique greatest lower bound is the greatest common divisor.
+unique greatest lower bound is the greatest common divisor. An example can be 
+seen in the figure below.
+
+\begin{figure}[h]
+  \centering
+\includegraphics[width=200px]{img/lattice.png}
+  \caption{Example of a lattice of integer divisors of 60.}
+  \label{fig:lattice_ex}
+\end{figure}
 
 If $L=(S, \le, \vee, \wedge, \bot, \top)$ is a complete lattice, and $e_1 \in S$
 and $e_2 \in S$, then we let $e_{lub} = (e_1 \vee e_1) \in S$ be the least 
@@ -312,7 +320,9 @@ one for the meet operator and the multiplicative zero for the join operator:
 If a lattice is well-defined for only one of these operators, it is called 
 a semilattice. Most dataflow analyses require only the semilattice structure 
 to work. The meet operator (or the join operator) in a semilattice defines a 
-partial order. The partial order is reflexive, antisymmetric and transitive. 
+partial order. The partial order is reflexive, antisymmetric and transitive.  
+An example of partial order is the natural order on $\mathbb{N}$, where 
+$0 \le 1 \le 2 \le 3 \le 4$ etc.
 
 %\section {Background}
 %This section elaborates on a few key concepts and technologies used in this 
@@ -802,11 +812,11 @@ Instructions (I)                & ::= & \\
 \end{footnotesize}
 \end{table}
 
-Figure~\ref{fig:ex3} shows the control flow graph of the program seen in
-Figure~\ref{fig:exmotiv}.
+Figure~\ref{fig:ex3} shows the interprocedural control flow graph of the program seen in
+Figure~\ref{fig:exmotiv}. It is equivalent to a normal control flow graph 
+with its functions inlined. 
 The implementation of the analysis that we shall present in this work is
-interprocedural, albeit
-not context-sensitive.
+interprocedural, albeit not context-sensitive.
 To achieve interprocedurality, we associate actual parameters with formal parameters 
 of functions.
 In the example of Figure~\ref{fig:exmotiv}, pointer $b$ -- an actual parameter --
@@ -853,8 +863,8 @@ In our representation, i.e., Figure~\ref{fig:syntax}, new locations are created 
 
 \begin{example}[label=initialization]
 \label{ex:initialization}
-Figure~\ref{fig:ex3} shows the control flow graph of the program  seen
-in Figure~\ref{fig:exmotiv}. The two allocations at lines 17 and 18 are
+Figure~\ref{fig:ex3} shows the interprocedural control flow graph of the program 
+seen in Figure~\ref{fig:exmotiv}. The two allocations at lines 17 and 18 are
 associated respectively with $\loc{0}$ and $\loc{1}$. 
 \end{example}
 
@@ -1028,7 +1038,7 @@ depicted in Figure~\ref{fig:lattice}.
 
 \begin{figure}[t!]
   \centering
-\includegraphics{img/lattice}
+\includegraphics{img/lattice.pdf}
   \caption{The concrete semantics of $\gr(p)=\{\loc{1} + [3, 5],
     \loc{3} + [3, 8]\}$. Dark grey cells denote possible (concrete)
     values of $p$.}
@@ -1349,7 +1359,7 @@ program seen in Figure~\ref{fig:exmotiv}.
 
 \begin{example}[label=widening]
 \label{ex:widening}
-Figure~\ref{fig:ex3} shows the control flow graph (CFG) of the program
+Figure~\ref{fig:ex3} shows the interprocedural control flow graph (CFG) of the program
 in Figure~\ref{fig:exmotiv}. Our graph is in e-SSA
 form~\citep{Bodik00}. Figure~\ref{fig:exWidening} shows the result
 of widening ranges after one round of abstract interpretation (stabilization 
@@ -1404,7 +1414,7 @@ $$\begin{array}[c]{clcc}
 & i_{6} & ([k-1, k], \bot) & \\
 & i_{7} & ([k, k+1], \bot) & \\ 
 \end{array}$$
-\caption{Abstract interpretation of CFG seen in Figure~\ref{fig:ex3}
+\caption{Abstract interpretation of interprocedural CFG seen in Figure~\ref{fig:ex3}
   (program in Figure~\ref{fig:exmotiv}). For $\gr$, we 
 associate \loc{0} with the \texttt{malloc} at line 17 and \loc{1} with the
 \texttt{malloc} at line 18 (of the program).
